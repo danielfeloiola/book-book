@@ -1,0 +1,179 @@
+{% extends "layout.html" %}
+
+
+{% block main %}
+
+
+<section class="banner-area relative" id="home">
+    <div class="overlay overlay-bg"></div>
+    <br>
+    <br>
+    <br>
+    <div class="container">
+        <div class="row height align-items-center justify-content-center">
+            <div class="col-lg-10">
+                <div class="generic-banner-content">
+                    <br>
+                <h2 class="text-white">About the book</h2>
+                    <br>
+                    <br>
+                </div>
+            </div>
+		</div>
+    </div>
+</section>
+<div class="container">
+    <div class="row height align-items-center justify-content-center">
+        <div class="col-lg-11">
+            <div class="section-top-border">
+                <div class="progress-table-wrap">
+
+                {% if session.user_id %}
+
+                    <div class="progress-table">
+                        <div class="table-head">
+                            <div class="serial"></div>
+                            <div class="visit">ISBN</div>
+
+                            <div class="visit">Book</div>
+                            <div class="visit">Author</div>
+                            <div class="serial">Year</div>
+
+                            <div class="serial">Ratings</div>
+                            <div class="serial">Rating</div>
+                        </div>
+
+
+
+                        <div class="table-row" style="">
+                            <div class="serial"></div>
+                            <div class="visit">{{ isbn }}</div>
+
+                            <div class="visit">{{ title }}</div>
+                            <div class="visit">{{ author }}</div>
+                            <div class="serial">{{ year }}</div>
+
+                            <div class="serial">{{ review_count }}</div>
+                            <div class="serial">{{ average_score }}</div>
+                        </div>
+
+                        <div class="table-row" style="">
+                            <div class="serial"></div>
+                            <div class="visit"><b>REVIEWS:</b></div>
+                        </div>
+                        {% if already_posted == false %}
+
+                            {% for rev in revs %}
+
+
+                            <div class="table-row" style="">
+                                <!-- FORM TO SEND REVIEW -->
+                                <div class="serial"></div>
+                                <p><i> {{ rev.0 }} </i></p>
+                            </div>
+
+
+                            {% endfor %}
+
+                        <div class="table-row" style="">
+                            <!-- FORM TO SEND REVIEW -->
+                            <div class="serial"></div>
+                            <form class="form-inline" style="width: 60%;" action="/book/{{ isbn }}" method="post">
+
+                              <div class="form-group" style="width: 100%;">
+
+                                <input style="width: 70%;" type="text" name="review" class="form-control" placeholder="Enjoyed the book?">
+                                <div style="width: 10px;"></div>
+                                <button type="submit" class="btn btn-primary btn-lg">Submit</button>
+                              </div>
+
+                            </form>
+                        </div>
+                    </div>
+
+                        {% else %}
+
+                            {% for rev in revs %}
+
+                                <div class="table-row" style="">
+                                    <!-- FORM TO SEND REVIEW -->
+                                    <div class="serial"></div>
+
+                                    <p><i> {{ rev.0 }} </i></p>
+
+                                </div>
+
+                            {% endfor %}
+
+                            <div class="table-row" style="">
+                                <!-- FORM TO SEND REVIEW -->
+                                <div class="serial"></div>
+
+                                <p> You can post only once in each book </p>
+
+                            </div>
+
+                        {% endif %}
+
+                {% else %}
+
+                    <div class="progress-table">
+                        <div class="table-head">
+                            <div class="serial"></div>
+                            <div class="visit">ISBN</div>
+
+                            <div class="visit">Book</div>
+                            <div class="visit">Author</div>
+                            <div class="serial">Year</div>
+
+                            <div class="serial">Ratings</div>
+                            <div class="serial">Rating</div>
+                        </div>
+
+
+                        <div class="table-row" style="">
+                            <div class="serial"></div>
+                            <div class="visit">{{ isbn }}</div>
+
+                            <div class="visit">{{ title }}</div>
+                            <div class="visit">{{ author }}</div>
+                            <div class="serial">{{ year }}</div>
+
+                            <div class="serial">{{ review_count }}</div>
+                            <div class="serial">{{ average_score }}</div>
+                        </div>
+
+                        <div class="table-row" style="">
+                            <div class="serial"></div>
+                            <div class="visit"><b>REVIEWS:</b></div>
+                        </div>
+
+                        {% for rev in revs %}
+
+                            <div class="table-row" style="">
+                                <!-- FORM TO SEND REVIEW -->
+                                <div class="serial"></div>
+                                <p><i> {{ rev.0 }} </i></p>
+                            </div>
+
+                        {% endfor %}
+
+                        <div class="table-row" style="">
+                            <!--<div class="serial"></div>-->
+                            <div class="serial"></div>
+                            <div class="visit">Log in to post comments!</div>
+                        </div>
+
+                    </div>
+                {% endif %}
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+</div>
+
+{% endblock %}

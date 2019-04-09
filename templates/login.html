@@ -1,0 +1,62 @@
+{% extends "layout.html" %}
+
+
+{% block main %}
+
+
+
+<section class="generic-banner relative">
+
+    <section class="banner-area relative" id="home">
+        <div class="overlay overlay-bg"></div>
+
+
+        <div class="container">
+            <div class="row height align-items-center justify-content-center">
+
+
+	<div class="container">
+		<div class="row height align-items-center justify-content-center">
+
+
+			<div class="col-lg-4" >
+
+                <h3 class="mb-20" style="color: white;">Log In</h3>
+                <div class="">
+                    <br>
+                    <ul class="unordered-list">
+
+                        {% if error %}
+                            <p style="color: red;">{{error}}</p>
+                        {% endif %}
+
+                        <form action="/login" method="post">
+                            <div class="mt-10">
+                                <input type="email" name="email" placeholder="Email" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Email'" required class="single-input">
+                            </div>
+                            <div class="mt-10">
+                                <input type="password" name="password" placeholder="Password" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Password'" required class="single-input">
+                            </div>
+                            <div class="input-group-icon mt-10">
+                                <button type="submit" class="genric-btn primary-border">Log In</button>
+                            </div>
+                            <div class="mt-10">
+                                <a style="color: white;" href="/register">Not registered? <u style="color: white;">Register</u> instead</a>
+                            </div>
+                        </form>
+
+                    </ul>
+                </div>
+
+            </div>
+
+		</div>
+    </div>
+</section>
+
+
+
+
+
+
+{% endblock %}

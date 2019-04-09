@@ -5,3 +5,4 @@ SQLAlchemy
 python-dotenv
 gunicorn
 werkzeug
+requests

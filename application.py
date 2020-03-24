@@ -15,7 +15,7 @@ app = Flask(__name__)
 app.config["TEMPLATES_AUTO_RELOAD"] = True
 
 # Check for environment variable
-if not os.getenv("DATABASE_URL"):
+if not os.environ("DATABASE_URL"):
     raise RuntimeError("DATABASE_URL is not set")
 
 # Configure session to use filesystem
@@ -49,6 +49,7 @@ def login():
     # if user is looking for the login page
     if request.method == "GET":
         return render_template("login.html")
+        
     # if user is loging in
     else:
 

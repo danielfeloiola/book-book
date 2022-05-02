@@ -14,9 +14,7 @@ app = Flask(__name__)
 # Ensure templates are auto-reloaded
 app.config["TEMPLATES_AUTO_RELOAD"] = True
 
-# Check for environment variable
-if not os.getenv("DATABASE_URL"):
-    raise RuntimeError("DATABASE_URL is not set")
+
 
 # Configure session to use filesystem
 app.config["SESSION_PERMANENT"] = False
@@ -24,7 +22,13 @@ app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
 # Set up database
-engine = create_engine(os.getenv("DATABASE_URL"))
+uri = os.getenv("DATABASE_URL")
+if not uri:
+    raise RuntimeError("DATABASE_URL is not set")
+
+if uri and uri.startswith("postgres://"):
+    uri = uri.replace("postgres://", "postgresql://", 1)
+engine = create_engine(uri)
 db = scoped_session(sessionmaker(bind=engine))
 
 
@@ -174,7 +178,7 @@ def search():
                 isbn = item[1]
 
                 # get rating from goodreads
-                req = requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": "2lrfXIj0Pa001mIduZBjUQ", "isbns": isbn})
+                req = requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": os.getenv("API_KEY"), "isbns": isbn})
                 rate = req.json()
 
                 # add to lists that will go to the html page
@@ -200,7 +204,7 @@ def book(isbn):
         isbn = item[1]
 
         # get rating from goodreads
-        req = requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": "2lrfXIj0Pa001mIduZBjUQ", "isbns": isbn})
+        req = requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": os.getenv("API_KEY"), "isbns": isbn})
         rate = req.json()
 
         # add to lists that will go to the html page
@@ -294,7 +298,7 @@ def api(isbn):
             isbn = item[1]
 
             # get rating from goodreads
-            req = requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": "2lrfXIj0Pa001mIduZBjUQ", "isbns": isbn})
+            req = requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": os.getenv("API_KEY"), "isbns": isbn})
             rate = req.json()
 
             # add to lists that will go to the html page

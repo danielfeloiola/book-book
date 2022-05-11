@@ -14,7 +14,7 @@
     <!-- meta character set -->
     <meta charset="UTF-8">
     <!-- Site Title -->
-    <title>The Book Review</title>
+    <title>book book</title>
     <!-- <title>the book review: {% block title %}{% endblock %}</title> -->
     <!--<title>Saas</title> -->
 
@@ -96,10 +96,7 @@
                                       </div>
                                   </div>
                             </form>
-
-
                           </li>
-                          <!-- this is probavly not corect! -->
                         <li><a class="btn btn-success" href="/logout" style="height: 3.5em; padding: 10px;" role="button">Log Out</a></li>
                       </ul>
                     {% else %}
@@ -119,9 +116,11 @@
                                     </div>
                                 </div>
                           </form>
-
                         </li>
-                        <li><a class="btn btn-success" href="/register" style="height: 3.5em; padding: 10px;" role="button">Register</a></li>
+
+                            <li><a class="btn btn-success" href="/register" style="height: 3.5em; padding: 10px;" role="button">Register</a></li>
+                            <li><a class="btn btn-success" href="/login" style="height: 3.5em; padding: 10px;" role="button">Log In</a></li>
+
                       </ul>
                     {% endif %}
                   </nav><!-- #nav-menu-container -->
@@ -133,11 +132,11 @@
 {% block main %}{% endblock %}
 
         <!-- start footer Area -->
-        <footer class="footer-area section-gap">
-            <div class="container">
-                <div class="row">
+        <footer class="footer-area section-gap" style="position: relative; width: 100%;">
+            <div class="container" >
+                <div class="row" >
                     <div class="col-lg-5 col-md-6 col-sm-6">
-                        <div class="single-footer-widget">
+                        <div class="single-footer-widget" style="text-align: left;" >
                             <h6>About Us</h6>
                             <p>
                                 A simple website where you can track the books you've read!

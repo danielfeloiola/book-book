@@ -22,58 +22,60 @@
 		</div>
     </div>
 </section>
-<div class="container">
-    <div class="row height align-items-center justify-content-center">
-        <div class="col-lg-11">
-            <div class="section-top-border">
-                <div class="progress-table-wrap">
-                    {% if no_results %}
-                    <!--<div class="progress-table">-->
-                        <!--<div class="table-head">-->
-                        <h4>Sorry, no books found</h4>
-                        <br>
-                        <br>
-                        <br>
-                        <br>
-                        <br>
-                        <br>
-                        <br>
-                        <br>
-                        <br>
 
-                    {% else %}
-                    <div class="progress-table">
-                        <div class="table-head">
-                            <div class="serial">#</div>
-                            <div class="country">Book</div>
-                            <div class="visit">Author</div>
-                            <div class="serial">Year</div>
-                            <div class="serial">rating</div>
-                            <div class="percentage"></div>
-                        </div>
-                        {% for result in results %}
-                            <a href="/book/{{ result.1 }}" style="color: grey">
-                                <div class="table-row" style="">
-                                    <div class="serial">{{loop.index}}</div>
-                                    <div class="country">{{ result.2 }}</div>
-                                    <div class="visit">{{ result.3 }}</div>
-                                    <div class="serial">{{ result.4 }}</div>
-                                    <div class="serial">{{ ratings[loop.index-1] }}</div>
-                                    <div class="percentage" style="padding-top: 20px; " >
-                                        <div class="progress"  style="height: 5px" >
-                                            <div class="progress-bar color-4" role="progressbar" style="width: {{ percentages[loop.index-1] }}%;" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"></div>
-                                        </div>
+<section style="min-height:100vh; position:relative;">
+    <div class="container" >
+        <div class="row height align-items-center justify-content-center" style="height:100%;">
+            <div class="col-lg-11" >
+                <div class="section-top-border" >
+                    <div class="progress-table-wrap">
+                        {% if no_results %}
+                        <!--<div class="progress-table">-->
+                            <!--<div class="table-head">-->
+                            <h4>Sorry, no books found</h4>
+                            <br>
+                            <br>
+                            <br>
+                            <br>
+                            <br>
+                            <br>
+                            <br>
+                            <br>
+                            <br>
+
+                        {% else %}
+                        <div class="progress-table">
+                            <div class="table-head">
+                                <div class="serial">#</div>
+                                <div class="country">Book</div>
+                                <div class="visit">Author</div>
+                                <div class="serial">Year</div>
+                                <!--<div class="serial">rating</div>
+                                <div class="percentage"></div>-->
+                            </div>
+                            {% for result in results %}
+                                <a href="/book/{{ result.1 }}" style="color: grey">
+                                    <div class="table-row" style="">
+                                        <div class="serial">{{loop.index}}</div>
+                                        <div class="country">{{ result.2 }}</div>
+                                        <div class="visit">{{ result.3 }}</div>
+                                        <div class="serial">{{ result.4 }}</div>
+                                        <!--<div class="serial">{{ ratings[loop.index-1] }}</div>
+                                        <div class="percentage" style="padding-top: 20px; " -->
+                                            <!--<div class="progress"  style="height: 5px" >
+                                                <div class="progress-bar color-4" role="progressbar" style="width: {{ percentages[loop.index-1] }}%;" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"></div>
+                                            </div> 
+                                        </div>-->
                                     </div>
-                                </div>
-                            </a>
-                        {% endfor %}
-                        {% endif %}
+                                </a>
+                            {% endfor %}
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-
+</section>
 
 {% endblock %}

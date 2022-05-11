@@ -4,4 +4,5 @@ Web Programming with Python and JavaScript
 
 A simple web app to track the books that you like
 
-UPDATE: This app no longer works due to the changes in the Goodreads API
+UPDATE: 
+Since Goodreads discontinued their API, the features that required their data are no longer available

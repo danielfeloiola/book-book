@@ -4,26 +4,21 @@
 {% block main %}
 
 
-
 <section class="generic-banner relative">
-
-    <section class="banner-area relative" id="home">
+    <section class="banner-area relative" id="home" style="min-height:100vh; position:relative;">
         <div class="overlay overlay-bg"></div>
         <div class="container">
             <div class="row height align-items-center justify-content-center">
 	<div class="container">
 		<div class="row height align-items-center justify-content-center">
 			<div class="col-lg-4" >
-
                 <h3 class="mb-20" style="color: white;">Log In</h3>
                 <div class="">
                     <br>
                     <ul class="unordered-list">
-
                         {% if error %}
                             <p style="color: red;">{{error}}</p>
                         {% endif %}
-
                         <form action="/login" method="post">
                             <div class="mt-10">
                                 <input type="email" name="email" placeholder="Email" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Email'" required class="single-input">
@@ -38,12 +33,9 @@
                                 <a style="color: white;" href="/register">Not registered? <u style="color: white;">Register</u> instead</a>
                             </div>
                         </form>
-
                     </ul>
                 </div>
-
             </div>
-
 		</div>
     </div>
 </section>

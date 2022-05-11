@@ -8,12 +8,10 @@ from sqlalchemy.orm import scoped_session, sessionmaker
 from werkzeug.exceptions import default_exceptions, HTTPException, InternalServerError
 from werkzeug.security import check_password_hash, generate_password_hash
 
-
 app = Flask(__name__)
 
 # Ensure templates are auto-reloaded
 app.config["TEMPLATES_AUTO_RELOAD"] = True
-
 
 
 # Configure session to use filesystem
@@ -21,13 +19,16 @@ app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
+
 # Set up database
 uri = os.getenv("DATABASE_URL")
 if not uri:
     raise RuntimeError("DATABASE_URL is not set")
 
+# adding this as heroku provides the wrong URL
 if uri and uri.startswith("postgres://"):
     uri = uri.replace("postgres://", "postgresql://", 1)
+
 engine = create_engine(uri)
 db = scoped_session(sessionmaker(bind=engine))
 
@@ -121,7 +122,7 @@ def register():
         # query to check if the username already exists
         query = db.execute("SELECT * FROM users WHERE email = :email", {"email":request.form.get("email")}).fetchone()
 
-        # if its a unique udername add user to database
+        # if its a unique username add user to database
         if not query:
             db.execute("INSERT INTO users (email, password) VALUES (:email, :password)",
                     {"email": request.form.get("email"), "password": hash_password})
@@ -134,7 +135,6 @@ def register():
             # add user to session
             session["user_id"] = rows[0]["id"]
             session["login"] = True
-
 
             # Redirect user to home page
             return redirect("/")
@@ -178,19 +178,19 @@ def search():
                 isbn = item[1]
 
                 # get rating from goodreads
-                req = requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": os.getenv("API_KEY"), "isbns": isbn})
-                rate = req.json()
+                #req = requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": os.getenv("API_KEY"), "isbns": isbn})
+                #rate = req.json()
 
                 # add to lists that will go to the html page
-                ratings.append(float(rate['books'][0]['average_rating']))
-                percentages.append(int(float(rate['books'][0]['average_rating']) * 20))
+                #ratings.append(float(rate['books'][0]['average_rating']))
+                #percentages.append(int(float(rate['books'][0]['average_rating']) * 20))
 
-            return render_template("results.html", results=results, ratings=ratings, percentages=percentages)
+            return render_template("results.html", results=results, ratings=None, percentages=None)
 
 @app.route("/book/<isbn>", methods=["GET", "POST"])
 def book(isbn):
 
-    # get the name of the bok from serchbar
+    # get the name of the book from serchbar
     book = isbn
 
     # query db for books
@@ -204,20 +204,20 @@ def book(isbn):
         isbn = item[1]
 
         # get rating from goodreads
-        req = requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": os.getenv("API_KEY"), "isbns": isbn})
-        rate = req.json()
+        #req = requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": os.getenv("API_KEY"), "isbns": isbn})
+        #rate = req.json()
 
         # add to lists that will go to the html page
-        rating = float(rate['books'][0]['average_rating'])
-        review = int(rate['books'][0]['reviews_count'])
+        #rating = float(rate['books'][0]['average_rating'])
+        #review = int(rate['books'][0]['reviews_count'])
 
         # get book data
         title = results[0][2]
         author = results[0][3]
         year = results[0][4]
         isbn = isbn
-        review_count = review
-        average_score = rating
+        #review_count = review
+        #average_score = rating
 
     # get reviews
     revs = db.execute(f"SELECT review FROM reviews WHERE isbn = '{book}'")
@@ -237,12 +237,12 @@ def book(isbn):
             else:
                 already_posted = True
 
-            return render_template('book.html', title=title, author=author, year=year, isbn=isbn, review_count=review_count, average_score=average_score, revs=revs, already_posted=already_posted)
+            return render_template('book.html', title=title, author=author, year=year, isbn=isbn,  revs=revs, already_posted=already_posted) # review_count=review_count, average_score=average_score,
 
         # if user is not logged in
         else:
 
-            return render_template('book.html', title=title, author=author, year=year, isbn=isbn, review_count=review_count, average_score=average_score, revs=revs)
+            return render_template('book.html', title=title, author=author, year=year, isbn=isbn, revs=revs) #review_count=review_count, average_score=average_score,
 
 
     # IF POST!
@@ -265,13 +265,13 @@ def book(isbn):
         already_posted = True
 
         # then reload the page, this time with the new comment
-        return render_template('book.html', title=title, author=author, year=year, isbn=isbn, review_count=review_count, average_score=average_score, revs=revs, already_posted=already_posted)
+        return render_template('book.html', title=title, author=author, year=year, isbn=isbn, revs=revs, already_posted=already_posted) #review_count=review_count, average_score=average_score,
 
 
 
-# this is here just because of the requirements
 @app.route("/api/<isbn>", methods=["GET", "POST"])
 def api(isbn):
+    ''' API: Returns data about the books in JSON format '''
 
     # get the name of the bok from serchbar
     book = isbn
@@ -284,10 +284,10 @@ def api(isbn):
     if not results:
 
         # make a variable
-        no_results = True
-
+        #no_results = True
+        return jsonify({"error": "Book ISBN is not in database"}), 404
         # Say no books matched the query
-        return render_template("404.html")
+        #return render_template("404.html")
 
     # else
     else:
@@ -298,21 +298,19 @@ def api(isbn):
             isbn = item[1]
 
             # get rating from goodreads
-            req = requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": os.getenv("API_KEY"), "isbns": isbn})
-            rate = req.json()
+            #req = requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": os.getenv("API_KEY"), "isbns": isbn})
+            #rate = req.json()
 
             # add to lists that will go to the html page
-            rating = float(rate['books'][0]['average_rating'])
-            review = int(rate['books'][0]['reviews_count'])
-
-            print(rating, review)
-
+            #rating = float(rate['books'][0]['average_rating'])
+            #review = int(rate['books'][0]['reviews_count'])
 
             return jsonify(
                 title = results[0][2],
                 author = results[0][3],
                 year = results[0][4],
                 isbn = isbn,
-                review_count = review,
-                average_score = rating
+                #review_count = review,
+                #average_score = rating
                 )
+
